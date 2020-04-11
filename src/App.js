@@ -224,12 +224,6 @@ const App = () => {
         setDisplayNumber(currentNumber + '.');
     };
 
-    console.log('=====')
-    console.log('previousNumber', previousNumber)
-    console.log('currentNumber', currentNumber)
-    console.log('displayNumber', displayNumber)
-    console.log('=====')
-
     return (
         <Container>
             <Board>{numberWithComma(displayNumber)}</Board>
