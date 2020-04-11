@@ -73,28 +73,37 @@ const App = () => {
     };
 
     const handleNumberInput = event => {
-        const buttonValue = event.target.innerText;
-        const numberInput = currentNumber + buttonValue || 0 + buttonValue;
+        const numberInput = event.target.innerText;
+
+        const hasDecimalPoint = /\./;
 
         // Cancel operator highlight
         setOperatorActive(false);
 
-        // Maximum digits is 8;
-        if (numberInput.replace('.', '').length > 8) {
+        if (currentNumber === 0) {
+            setCurrentNumber(parseInt(numberInput));
+            setDisplayNumber(parseInt(numberInput));
+        }
+
+        if (currentNumber.toString().replace('.', '').length >= 8) {
             return;
         }
 
-        // If has decimal point
-        if (currentNumber.toString().match(/\./)) {
-            setDisplayNumber(parseFloat(numberInput));
-            setCurrentNumber(parseFloat(numberInput));
+        if (hasDecimalPoint.test(currentNumber)) {
 
+            if (/^0.0+(?![0-9])/.test(currentNumber + numberInput)) {
+                setCurrentNumber(currentNumber + numberInput);
+                setDisplayNumber(currentNumber + numberInput);
+                return;
+            }
+
+            setCurrentNumber(parseFloat(currentNumber + numberInput));
+            setDisplayNumber(parseFloat(currentNumber + numberInput));
             return;
         }
 
-        // Display the enterd number
-        setDisplayNumber(parseInt(numberInput));
-        setCurrentNumber(parseInt(numberInput));
+        setCurrentNumber(parseInt(currentNumber + numberInput));
+        setDisplayNumber(parseInt(currentNumber + numberInput));
     };
 
     const handleOperatorInput = event => {
@@ -103,21 +112,13 @@ const App = () => {
         setCurrentNumber(0);
         setOperatorActive(true);
 
-        if (displayNumber.toString().length > 8) {
-            setDisplayNumber('Error');
-            setCurrentNumber(0);
-            setPreviousNumber(0);
-            setOperator('');
-            setOperatorActive(false);
-            return;
-        }
-
         // If is first operator
         if (!operator) {
             setPreviousNumber(currentNumber);
             setOperator(operatorInput);
             return;
         }
+
 
         // Not first operator, calculate the previousNumber and display it
         switch (operator) {
@@ -215,13 +216,19 @@ const App = () => {
     };
 
     const addDecimalPoint = () => {
-        if (currentNumber.toString().match(/\./)) {
+        if (currentNumber.toString().match(/\./) || currentNumber.toString().length >= 8) {
             return;
         }
 
         setCurrentNumber(currentNumber + '.');
         setDisplayNumber(currentNumber + '.');
     };
+
+    console.log('=====')
+    console.log('previousNumber', previousNumber)
+    console.log('currentNumber', currentNumber)
+    console.log('displayNumber', displayNumber)
+    console.log('=====')
 
     return (
         <Container>
