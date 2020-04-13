@@ -1,6 +1,8 @@
 # React Calculator
 Idea from [here](https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Calculator-App.md)
 
+![Imgur](https://i.imgur.com/9fsI87D.png)
+
 ## DEMO
 You can preview live demo [here](https://harry-chiu.github.io/react-calculator)
 
